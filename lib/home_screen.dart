@@ -1,3 +1,4 @@
+// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,6 +10,17 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Smart Parking System'),
+        centerTitle: true,
+        backgroundColor: Colors.grey[900],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              // Navigate to the SettingsScreen
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -57,6 +69,10 @@ class HomeScreen extends StatelessWidget {
                   color: status == 'Available'
                       ? Colors.green[800]
                       : Colors.red[800],
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   child: ListTile(
                     leading: Icon(
                       status == 'Available' ? Icons.local_parking : Icons.block,
