@@ -1,4 +1,3 @@
-// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -59,46 +58,54 @@ class HomeScreen extends StatelessWidget {
             final data = snapshot.data!.data() as Map<String, dynamic>;
             final slots = data['slots'] as List<dynamic>;
 
-            return ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 16),
+            return GridView.builder(
+              padding: EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // 2 columns
+                crossAxisSpacing: 16, // Spacing between columns
+                mainAxisSpacing: 16, // Spacing between rows
+                childAspectRatio: 1, // Square items
+              ),
               itemCount: slots.length,
               itemBuilder: (context, index) {
                 final slot = slots[index];
                 final status = slot['status'];
+                final isAvailable = status == 'Available';
+
                 return Card(
-                  color: status == 'Available'
-                      ? Colors.green[800]
-                      : Colors.red[800],
-                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  color: isAvailable ? Colors.green[800] : Colors.red[800],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: ListTile(
-                    leading: Icon(
-                      status == 'Available' ? Icons.local_parking : Icons.block,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                    title: Text(
-                      'Parking Slot ${index + 1}',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Car Icon
+                      Icon(
+                        Icons.directions_car,
                         color: Colors.white,
+                        size: 48,
                       ),
-                    ),
-                    subtitle: Text(
-                      'Status: $status',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white70,
+                      SizedBox(height: 8),
+                      // Parking Slot Number
+                      Text(
+                        'Slot ${index + 1}',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    trailing: Icon(
-                      status == 'Available' ? Icons.check_circle : Icons.cancel,
-                      color: Colors.white,
-                      size: 28,
-                    ),
+                      SizedBox(height: 8),
+                      // Status
+                      Text(
+                        isAvailable ? 'Available' : 'Occupied',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white70,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },

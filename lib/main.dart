@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SplashScreen(), // Start with the SplashScreen
+      home: SplashScreen(
+        nextScreen: HomeScreen(), // Pass the required 'nextScreen' parameter
+      ),
       routes: {
         '/home': (context) => HomeScreen(), // Route to the HomeScreen
       },
